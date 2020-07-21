@@ -1,0 +1,69 @@
+PODS:
+  - Alamofire (5.2.1)
+  - DropDown (2.3.13)
+  - Kingfisher (5.14.0):
+    - Kingfisher/Core (= 5.14.0)
+  - Kingfisher/Core (5.14.0)
+  - ObjectMapper (4.2.0)
+  - RxAlamofire (5.3.2):
+    - RxAlamofire/Core (= 5.3.2)
+  - RxAlamofire/Core (5.3.2):
+    - Alamofire (~> 5.1)
+    - RxSwift (~> 5.1)
+  - RxBlocking (5.1.1):
+    - RxSwift (~> 5)
+  - RxCocoa (5.1.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.1)
+  - RxTest (5.1.1):
+    - RxSwift (~> 5)
+  - SwiftGen (6.1.0)
+  - Swinject (2.7.1)
+
+DEPENDENCIES:
+  - DropDown (= 2.3.13)
+  - Kingfisher (~> 5.0)
+  - ObjectMapper (~> 4.2.0)
+  - RxAlamofire (~> 5.3.2)
+  - RxBlocking (~> 5)
+  - RxCocoa (~> 5)
+  - RxSwift (~> 5)
+  - RxTest (~> 5)
+  - SwiftGen (~> 6.0)
+  - Swinject
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - DropDown
+    - Kingfisher
+    - ObjectMapper
+    - RxAlamofire
+    - RxBlocking
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - RxTest
+    - SwiftGen
+    - Swinject
+
+SPEC CHECKSUMS:
+  Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
+  Kingfisher: 7b64389a43139c903ec434788344c288217c792d
+  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
+  RxAlamofire: 9234f30d94bfae9889c2aaba36358312083a7ad3
+  RxBlocking: 5f700a78cad61ce253ebd37c9a39b5ccc76477b4
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
+  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
+  RxTest: 711632d5644dffbeb62c936a521b5b008a1e1faa
+  SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
+  Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
+
+PODFILE CHECKSUM: c53c935c3cdc0e7572af71bf2441647fa2bb04bd
+
+COCOAPODS: 1.9.1

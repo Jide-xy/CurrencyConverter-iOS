@@ -8,14 +8,28 @@
 
 import UIKit
 import CoreData
+import Swinject
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    lazy var container = Container(){container in
+        ApplicationContainer.build(in: container, persistentContainer: persistentContainer)
+    }
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+//        guard let rootVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as? ViewController else {
+//            return false
+//        }
+//        let viewModel = container.resolve(RatesViewModel.self)!
+//        rootVC.ratesViewModel = viewModel
+//        let rootNC = UINavigationController(rootViewController: rootVC)
+//        UIApplication.shared.windows.first?.rootViewController = rootNC
+//        UIApplication.shared.windows.first?.makeKeyAndVisible()
+//        let viewController = (self as UIApplicationDelegate).window??.rootViewController as? ViewController
+//        viewController!.ratesViewModel = container.resolve(RatesViewModel.self)!
         return true
     }
 

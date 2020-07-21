@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="CurrencyConverter" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Currency Calculator" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hX-fQ-bnA">
+                                <rect key="frame" x="20" y="144" width="394" height="58.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <size key="shadowOffset" width="1" height="-1"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="999" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Value" textAlignment="natural" minimumFontSize="17" background="square.fill" catalog="system" disabledBackground="square.fill" translatesAutoresizingMaskIntoConstraints="NO" id="R7d-8e-V0Z">
+                                <rect key="frame" x="20" y="266.5" width="374" height="34"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="11"/>
+                                <textInputTraits key="textInputTraits" textContentType="tel"/>
+                                <connections>
+                                    <action selector="sourceAmountTextChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="wbT-W5-t1B"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="2fE-2H-IBm"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="998" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" background="square" catalog="system" disabledBackground="square.fill" translatesAutoresizingMaskIntoConstraints="NO" id="EYE-aw-i1B">
+                                <rect key="frame" x="20" y="322.5" width="374" height="34"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="11"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="leading" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter/Select Currency" textAlignment="natural" minimumFontSize="17" background="square" catalog="system" disabledBackground="square.fill" translatesAutoresizingMaskIntoConstraints="NO" id="i5U-va-JUp">
+                                <rect key="frame" x="215" y="377.5" width="179" height="34"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="destinationCurrencyTextChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="AmJ-zb-HmR"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="leading" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter/Select Currency" textAlignment="natural" minimumFontSize="17" background="chevron.down.square.fill" catalog="system" disabledBackground="square.fill" translatesAutoresizingMaskIntoConstraints="NO" id="L41-Mx-wFr">
+                                <rect key="frame" x="20" y="377.5" width="179" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="sourceCurrencyTextChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="3qK-2G-dgL"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQj-cI-lXf">
+                                <rect key="frame" x="386" y="266.5" width="0.0" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1zT-4f-hWN">
+                                <rect key="frame" x="386" y="322.5" width="0.0" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="i5U-va-JUp" firstAttribute="width" secondItem="L41-Mx-wFr" secondAttribute="width" id="3TW-76-5cd"/>
+                            <constraint firstItem="EYE-aw-i1B" firstAttribute="top" secondItem="R7d-8e-V0Z" secondAttribute="bottom" constant="22" id="59S-Fn-m1Z"/>
+                            <constraint firstItem="i5U-va-JUp" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="5UY-7n-hsT"/>
+                            <constraint firstItem="8hX-fQ-bnA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="7UN-1n-yBM"/>
+                            <constraint firstItem="8hX-fQ-bnA" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="E9B-EU-bNh"/>
+                            <constraint firstItem="R7d-8e-V0Z" firstAttribute="top" secondItem="8hX-fQ-bnA" secondAttribute="bottom" constant="64" id="NTw-rb-Vfr"/>
+                            <constraint firstItem="L41-Mx-wFr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="U0O-u4-Ixq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="R7d-8e-V0Z" secondAttribute="trailing" constant="20" id="Vxw-Tm-PA5"/>
+                            <constraint firstItem="8hX-fQ-bnA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ZPU-18-gwO"/>
+                            <constraint firstItem="L41-Mx-wFr" firstAttribute="top" secondItem="EYE-aw-i1B" secondAttribute="bottom" constant="21" id="aXw-N3-IUr"/>
+                            <constraint firstItem="i5U-va-JUp" firstAttribute="top" secondItem="EYE-aw-i1B" secondAttribute="bottom" constant="21" id="hxp-WD-h4f"/>
+                            <constraint firstItem="EYE-aw-i1B" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="iu6-Bh-9uD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="EYE-aw-i1B" secondAttribute="trailing" constant="20" id="kyX-Mb-sKO"/>
+                            <constraint firstItem="i5U-va-JUp" firstAttribute="leading" secondItem="L41-Mx-wFr" secondAttribute="trailing" constant="16" id="uxX-c9-cSr"/>
+                            <constraint firstItem="R7d-8e-V0Z" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="vIE-gu-RhR"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="destinationDropDownTF" destination="i5U-va-JUp" id="g9T-6f-FZd"/>
+                        <outlet property="destinationTFCurrencyLabel" destination="1zT-4f-hWN" id="LPV-Ij-jgW"/>
+                        <outlet property="destinationTextField" destination="EYE-aw-i1B" id="Y8R-Gf-hJY"/>
+                        <outlet property="sourceDropDownTF" destination="L41-Mx-wFr" id="r20-Nv-vgF"/>
+                        <outlet property="sourceTFCurrencyLabel" destination="tQj-cI-lXf" id="lnJ-mv-bOy"/>
+                        <outlet property="sourceTextField" destination="R7d-8e-V0Z" id="HEc-eo-yCa"/>
+                        <outlet property="view" destination="R7d-8e-V0Z" id="ZHo-tG-KfJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="129.91071428571428"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="chevron.down.square.fill" catalog="system" width="128" height="114"/>
+        <image name="square" catalog="system" width="128" height="114"/>
+        <image name="square.fill" catalog="system" width="128" height="114"/>
+    </resources>
+</document>
