@@ -7,15 +7,160 @@
 //
 
 import UIKit
+import DropDown
+import SnapKit
 
 class HomeView: UIView {
+    
+    final let FLAG_SIZE = 24
+    final let FLAG_PADDING = 8
+    
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemBlue
+        label.font = .systemFont(ofSize: 24)
+        label.text = "Currency\nCalculator"
+        label.shadowColor = .label
+        label.shadowOffset = .init(width: 1, height: -1)
+        label.numberOfLines = 0
+        return label
+    }()
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    lazy var sourceTextField: UITextField = {
+        let tf = UITextField()
+        tf.background = UIImage(systemName: "square.filled")
+        tf.borderStyle = .roundedRect
+        tf.textContentType = .telephoneNumber
+        tf.textAlignment = .left
+        tf.rightViewMode = .always
+        
+        tf.rightView = sourceTFCurrencyLabel
+        tf.placeholder = "Enter Value"
+        tf.font = .systemFont(ofSize: 17)
+        return tf
+    }()
+    
+    lazy var destinationTextField: UITextField = {
+        let tf = UITextField()
+        tf.background = UIImage(systemName: "square.filled")
+        tf.borderStyle = .roundedRect
+        tf.textContentType = .telephoneNumber
+        tf.textAlignment = .left
+        tf.rightViewMode = .always
+        tf.rightView = destinationTFCurrencyLabel
+        tf.font = .systemFont(ofSize: 17)
+        return tf
+    }()
+    
+    lazy var sourceTFCurrencyLabel: UILabel = {
+        let label = UILabel()
+//        label.frame = CGRect(x: 0.0, y: 0.0, width: 60, height: 40)
+//        label.textAlignment = .left
+        label.text = "---"
+        label.font = .systemFont(ofSize: 17)
+        return label
+    }()
+    lazy var destinationTFCurrencyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "---"
+        label.font = .systemFont(ofSize: 17)
+        return label
+    }()
+    lazy var sourceDropDownTF: UITextField = {
+        let tf = UITextField()
+        //tf.background = UIImage(systemName: "square.filled")
+        tf.borderStyle = .roundedRect
+        tf.textAlignment = .left
+        let sourceViewLeft: UIView = UIView(frame: CGRect(x: FLAG_PADDING, y: 0, width: Int(sourceDDCurrencyImage.frame.width) + FLAG_PADDING, height: Int(sourceDDCurrencyImage.frame.height)))
+        sourceViewLeft.addSubview(sourceDDCurrencyImage)
+        tf.leftView = sourceViewLeft
+        tf.leftViewMode = .always
+        tf.placeholder = "Enter/Select Currency"
+        tf.font = .systemFont(ofSize: 17)
+        return tf
+    }()
+    
+    lazy var destinationDropDownTF: UITextField = {
+        let tf = UITextField()
+        //tf.background = UIImage(systemName: "square.filled")
+        tf.borderStyle = .roundedRect
+        tf.textAlignment = .left
+        let destViewLeft: UIView = UIView(frame: CGRect(x: FLAG_PADDING, y: 0, width: Int(destinationDDCurrencyImage.frame.width) + FLAG_PADDING, height: Int(destinationDDCurrencyImage.frame.height)))
+        destViewLeft.addSubview(destinationDDCurrencyImage)
+        tf.leftView = destViewLeft
+        tf.leftViewMode = .always
+        tf.placeholder = "Enter/Select Currency"
+        tf.font = .systemFont(ofSize: 17)
+        return tf
+    }()
+    lazy var sourceDDCurrencyImage: UIImageView = {
+        let imageView = UIImageView(frame: CGRect(x: FLAG_PADDING, y: 0, width: FLAG_SIZE, height: FLAG_SIZE))
+        
+        return imageView
+    }()
+    lazy var destinationDDCurrencyImage: UIImageView = {
+        let imageView = UIImageView(frame: CGRect(x: FLAG_PADDING, y: 0, width: FLAG_SIZE, height: FLAG_SIZE))
+        
+        return imageView
+    }()
+    
+    lazy var sourceDropDown: DropDown = {
+        let dd = DropDown()
+        dd.anchorView = sourceDropDownTF
+        dd.cellNib = UINib(nibName: "CurrencyDropDownView", bundle: nil)
+        return dd
+    }()
+    lazy var destinationDropDown: DropDown = {
+        let dd = DropDown()
+        dd.anchorView = destinationDropDownTF
+        dd.cellNib = UINib(nibName: "CurrencyDropDownView", bundle: nil)
+        return dd
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = .white
+        addSubviews()
+        setUpConstraints()
     }
-    */
 
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func setUpConstraints(){
+        let root = self
+        titleLabel.snp.makeConstraints{ make in
+            make.top.equalTo(root.snp.top).offset(100)
+            make.leading.equalTo(root.snp.leadingMargin)
+        }
+        sourceTextField.snp.makeConstraints{ make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(64)
+            make.leading.equalTo(root.snp.leadingMargin)
+            make.trailing.equalTo(root.snp.trailingMargin)
+        }
+        destinationTextField.snp.makeConstraints{ make in
+            make.top.equalTo(sourceTextField.snp.bottom).offset(22)
+            make.leading.equalTo(root.snp.leadingMargin)
+            make.trailing.equalTo(root.snp.trailingMargin)
+        }
+        sourceDropDownTF.snp.makeConstraints{ make in
+            make.top.equalTo(destinationTextField.snp.bottom).offset(21)
+            make.leading.equalTo(root.snp.leadingMargin)
+        }
+        destinationDropDownTF.snp.makeConstraints{ make in
+            make.top.equalTo(sourceDropDownTF)
+            make.trailing.equalTo(root.snp.trailingMargin)
+            make.leading.equalTo(sourceDropDownTF.snp.trailing).offset(16)
+            make.width.equalTo(sourceDropDownTF)
+        }
+    }
+    
+    func addSubviews() {
+        addSubview(titleLabel)
+        addSubview(sourceTextField)
+        addSubview(destinationTextField)
+        addSubview(sourceDropDownTF)
+        addSubview(destinationDropDownTF)
+    }
 }

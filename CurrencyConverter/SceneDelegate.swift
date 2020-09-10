@@ -69,9 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //guard let _ = (scene as? UIWindowScene) else { return }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        guard let rootVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as? ViewController else {
-            return
-        }
+        let rootVC = ViewController()
         let viewModel = container.resolve(RatesViewModel.self)!
         rootVC.ratesViewModel = viewModel
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
@@ -108,7 +106,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
 
         // Save changes in the application's managed object context when the application transitions to the background.
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        saveContext()
     }
 
 

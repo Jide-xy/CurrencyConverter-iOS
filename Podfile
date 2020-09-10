@@ -17,6 +17,7 @@ target 'CurrencyConverter' do
     # pod 'AlamofireObjectMapper', '~> 6.2.0'
     pod 'Kingfisher', '~> 5.0'
     pod 'DropDown', '2.3.13'
+    pod 'SnapKit', '~> 5.0.0'
 
   target 'CurrencyConverterTests' do
     inherit! :search_paths

@@ -17,29 +17,13 @@ class ViewController: UIViewController {
     final let FLAGS_URL = "https://www.countryflags.io/"
     final let FLAGS_URL_CONFIG = "/shiny/24.png"
     
-    final let FLAG_SIZE = 24
-    final let FLAG_PADDING = 8
-    
-    @IBOutlet weak var sourceTextField: UITextField!
-    
-    @IBOutlet weak var destinationTextField: UITextField!
-    
-    @IBOutlet weak var sourceTFCurrencyLabel: UILabel!
-    @IBOutlet weak var destinationTFCurrencyLabel: UILabel!
-    @IBOutlet weak var sourceDropDownTF: UITextField!
-    
-    @IBOutlet weak var destinationDropDownTF: UITextField!
-    var sourceDDCurrencyImage: UIImageView!
-    var destinationDDCurrencyImage: UIImageView!
+    var homeView: HomeView!
     
     public var ratesViewModel: RatesViewModel!
     
     var disposeBag = DisposeBag()
     
     var rates: [CurrencyRate] = []
-    
-    var sourceDropDown: DropDown?
-    var destinationDropDown: DropDown?
     
     let currencies = Util.currencyMap
     
@@ -51,6 +35,11 @@ class ViewController: UIViewController {
         initDropDown()
         bindObservables()
         // Do any additional setup after loading the view.
+    }
+    
+    override func loadView() {
+        homeView = HomeView()
+        view = homeView
     }
     
     
@@ -85,41 +74,24 @@ class ViewController: UIViewController {
     }
     
     private func initViews(){
-        sourceTextField.rightView = sourceTFCurrencyLabel
-        destinationTextField.rightView = destinationTFCurrencyLabel
-        sourceTextField.rightViewMode = .always
-        destinationTextField.rightViewMode = .always
-        
-        sourceDDCurrencyImage = UIImageView(frame: CGRect(x: FLAG_PADDING, y: 0, width: FLAG_SIZE, height: FLAG_SIZE))
-        destinationDDCurrencyImage = UIImageView(frame: CGRect(x: FLAG_PADDING, y: 0, width: FLAG_SIZE, height: FLAG_SIZE))
-        
-        
-        let sourceViewLeft: UIView = UIView(frame: CGRect(x: FLAG_PADDING, y: 0, width: Int(sourceDDCurrencyImage.frame.width) + FLAG_PADDING, height: Int(sourceDDCurrencyImage.frame.height)))
-        sourceViewLeft.addSubview(sourceDDCurrencyImage)
-        
-        let destViewLeft: UIView = UIView(frame: CGRect(x: FLAG_PADDING, y: 0, width: Int(destinationDDCurrencyImage.frame.width) + FLAG_PADDING, height: Int(destinationDDCurrencyImage.frame.height)))
-        destViewLeft.addSubview(destinationDDCurrencyImage)
-        
-        sourceDropDownTF.leftView = sourceViewLeft
-        destinationDropDownTF.leftView = destViewLeft
-        sourceDropDownTF.leftViewMode = .always
-        destinationDropDownTF.leftViewMode = .always
-        
-        sourceDropDownTF.delegate = self
-        destinationDropDownTF.delegate = self
+        homeView.sourceDropDownTF.delegate = self
+        homeView.destinationDropDownTF.delegate = self
+        homeView.sourceDropDownTF.addTarget(self, action: #selector(ViewController.sourceCurrencyTextChanged(_:)), for: .editingChanged)
+        homeView.destinationDropDownTF.addTarget(self, action: #selector(ViewController.destinationCurrencyTextChanged(_:)), for: .editingChanged)
+        homeView.sourceTextField.addTarget(self, action: #selector(ViewController.sourceAmountTextChanged(_:)), for: .editingChanged)
     }
     
     private func initDropDown(){
-        sourceDropDown = DropDown()
-        destinationDropDown = DropDown()
-        
-        sourceDropDown?.anchorView = sourceDropDownTF
-        destinationDropDown?.anchorView = destinationDropDownTF
-        
-        /*** IMPORTANT PART FOR CUSTOM CELLS ***/
-        sourceDropDown?.cellNib = UINib(nibName: "CurrencyDropDownView", bundle: nil)
 
-        sourceDropDown?.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
+        homeView.sourceDropDown.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
+           guard let cell = cell as? CurrencyDropDownView else { return }
+
+           // Setup your custom UI components
+            cell.flagImageView.kf.setImage(with: self.buildImageUrl(item: item))
+            cell.optionLabel.text = item
+        }
+
+        homeView.destinationDropDown.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
            guard let cell = cell as? CurrencyDropDownView else { return }
 
            // Setup your custom UI components
@@ -127,48 +99,38 @@ class ViewController: UIViewController {
             cell.optionLabel.text = item
         }
         
-        destinationDropDown?.cellNib = UINib(nibName: "CurrencyDropDownView", bundle: nil)
-
-        destinationDropDown?.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
-           guard let cell = cell as? CurrencyDropDownView else { return }
-
-           // Setup your custom UI components
-            cell.flagImageView.kf.setImage(with: self.buildImageUrl(item: item))
-            cell.optionLabel.text = item
-        }
+        homeView.sourceDropDown.dataSource = Array(currencies.keys).sorted()
+        homeView.destinationDropDown.dataSource = Array(currencies.keys).sorted()
         
-        sourceDropDown?.dataSource = Array(currencies.keys).sorted()
-        destinationDropDown?.dataSource = Array(currencies.keys).sorted()
+        homeView.sourceDropDown.direction = .any
+        homeView.destinationDropDown.direction = .any
         
-        sourceDropDown?.direction = .any
-        destinationDropDown?.direction = .any
+        homeView.sourceDropDown.bottomOffset = CGPoint(x: 0, y:(homeView.sourceDropDown.anchorView?.plainView.bounds.height)!)
+        homeView.destinationDropDown.bottomOffset = CGPoint(x: 0, y:(homeView.destinationDropDown.anchorView?.plainView.bounds.height)!)
         
-        sourceDropDown?.bottomOffset = CGPoint(x: 0, y:(sourceDropDown?.anchorView?.plainView.bounds.height)!)
-        destinationDropDown?.bottomOffset = CGPoint(x: 0, y:(destinationDropDown?.anchorView?.plainView.bounds.height)!)
+        homeView.sourceDropDown.topOffset = CGPoint(x: 0, y: -(homeView.sourceDropDown.anchorView?.plainView.bounds.height)!)
+        homeView.destinationDropDown.topOffset = CGPoint(x: 0, y: -(homeView.destinationDropDown.anchorView?.plainView.bounds.height)!)
         
-        sourceDropDown?.topOffset = CGPoint(x: 0, y: -(sourceDropDown?.anchorView?.plainView.bounds.height)!)
-        destinationDropDown?.topOffset = CGPoint(x: 0, y: -(destinationDropDown?.anchorView?.plainView.bounds.height)!)
-        
-        sourceDropDown?.selectionAction = { (index: Index, item: String) in
-            self.sourceDropDownTF.text = item
-            self.sourceDDCurrencyImage.kf.setImage(with: self.buildImageUrl(item: item))
-            self.sourceTFCurrencyLabel.text = item
+        homeView.sourceDropDown.selectionAction = { (index: Index, item: String) in
+            self.homeView.sourceDropDownTF.text = item
+            self.homeView.sourceDDCurrencyImage.kf.setImage(with: self.buildImageUrl(item: item))
+            self.homeView.sourceTFCurrencyLabel.text = item
             
             
             //buildHistoricalRatesGraph(ratesTab.selectedTabPosition)
-            if (self.sourceTextField.text?.isEmpty ?? true || self.sourceDropDownTF.text?.isEmpty ?? true || self.destinationDropDownTF.text?.isEmpty ?? true) {
+            if (self.homeView.sourceTextField.text?.isEmpty ?? true || self.homeView.sourceDropDownTF.text?.isEmpty ?? true || self.homeView.destinationDropDownTF.text?.isEmpty ?? true) {
                 return
             }
             self.convertValue()
         }
         
-        destinationDropDown?.selectionAction = { (index: Index, item: String) in
-            self.destinationDropDownTF.text = item
-            self.destinationDDCurrencyImage.kf.setImage(with: self.buildImageUrl(item: item))
-            self.destinationTFCurrencyLabel.text = item
+        homeView.destinationDropDown.selectionAction = { (index: Index, item: String) in
+            self.homeView.destinationDropDownTF.text = item
+            self.homeView.destinationDDCurrencyImage.kf.setImage(with: self.buildImageUrl(item: item))
+            self.homeView.destinationTFCurrencyLabel.text = item
             
             //buildHistoricalRatesGraph(ratesTab.selectedTabPosition)
-            if (self.sourceTextField.text?.isEmpty ?? true || self.sourceDropDownTF.text?.isEmpty ?? true || self.destinationDropDownTF.text?.isEmpty ?? true) {
+            if (self.homeView.sourceTextField.text?.isEmpty ?? true || self.homeView.sourceDropDownTF.text?.isEmpty ?? true || self.homeView.destinationDropDownTF.text?.isEmpty ?? true) {
                 return
             }
             self.convertValue()
@@ -186,20 +148,20 @@ class ViewController: UIViewController {
          return URL(string: imageUrl)
     }
 
-    @IBAction func sourceCurrencyTextChanged(_ sender: UITextField) {
-        filterAndShowDropDown(newText: sender.text, dropDown: sourceDropDown)
+    @objc func sourceCurrencyTextChanged(_ sender: UITextField) {
+        filterAndShowDropDown(newText: sender.text, dropDown: homeView.sourceDropDown)
     }
     
-    @IBAction func destinationCurrencyTextChanged(_ sender: UITextField) {
-        filterAndShowDropDown(newText: sender.text, dropDown: destinationDropDown)
+    @objc func destinationCurrencyTextChanged(_ sender: UITextField) {
+        filterAndShowDropDown(newText: sender.text, dropDown: homeView.destinationDropDown)
     }
     
-    @IBAction func sourceAmountTextChanged(_ sender: UITextField) {
+    @objc func sourceAmountTextChanged(_ sender: UITextField) {
         if (sender.text?.isEmpty ?? false) {
-            destinationTextField.text = ""
+            homeView.destinationTextField.text = ""
             return
         }
-        sourceTextField.text = formatValue(value: sender.text!)
+        homeView.sourceTextField.text = formatValue(value: sender.text!)
         convertValue()
 //        if sender.text! == formatValue(value: sender.text!) {
 //            convertValue()
@@ -214,10 +176,10 @@ extension ViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField {
-        case sourceDropDownTF:
-            filterAndShowDropDown(newText: textField.text, dropDown: sourceDropDown)
-        case destinationDropDownTF:
-            filterAndShowDropDown(newText: textField.text, dropDown: destinationDropDown)
+        case homeView.sourceDropDownTF:
+            filterAndShowDropDown(newText: textField.text, dropDown: homeView.sourceDropDown)
+        case homeView.destinationDropDownTF:
+            filterAndShowDropDown(newText: textField.text, dropDown: homeView.destinationDropDown)
         default:
             break
         }
@@ -225,10 +187,10 @@ extension ViewController: UITextFieldDelegate{
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         switch textField {
-        case sourceDropDownTF:
-            filterAndHideDropDown(textField: textField, dropDown: sourceDropDown)
-        case destinationDropDownTF:
-            filterAndHideDropDown(textField: textField, dropDown: destinationDropDown)
+        case homeView.sourceDropDownTF:
+            filterAndHideDropDown(textField: textField, dropDown: homeView.sourceDropDown)
+        case homeView.destinationDropDownTF:
+            filterAndHideDropDown(textField: textField, dropDown: homeView.destinationDropDown)
         default:
             break
         }
@@ -302,8 +264,8 @@ extension ViewController {
     }
     
     private func convertValue(){
-        if let sourceCurrency = sourceDropDownTF.text, let destCurrency = destinationDropDownTF.text,
-            !sourceCurrency.isEmpty, !destCurrency.isEmpty, let sourceValue = sourceTextField.text, !sourceValue.isEmpty,
+        if let sourceCurrency = homeView.sourceDropDownTF.text, let destCurrency = homeView.destinationDropDownTF.text,
+            !sourceCurrency.isEmpty, !destCurrency.isEmpty, let sourceValue = homeView.sourceTextField.text, !sourceValue.isEmpty,
             let sourceRate = rates.first(where: {$0.currencyCode == sourceCurrency}),
             let destRate = rates.first(where: {$0.currencyCode == destCurrency}),
             sourceRate.baseCurrencyCode == destRate.baseCurrencyCode
@@ -312,7 +274,7 @@ extension ViewController {
             let sourceToNumber = nf.number(from: sourceValue.replacingOccurrences(of: ",", with: "") )?.doubleValue ?? 0.0
             let convertedValue = sourceToNumber * destRate.rate / sourceRate.rate
             
-            destinationTextField.text = formatValue(value: String(format: "%f", convertedValue))
+            homeView.destinationTextField.text = formatValue(value: String(format: "%f", convertedValue))
         }
     }
 }
