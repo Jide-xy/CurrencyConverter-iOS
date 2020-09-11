@@ -19,17 +19,16 @@
 		0628B2A124929A0800CD5FE7 /* CurrencyRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2A024929A0800CD5FE7 /* CurrencyRate.swift */; };
 		0628B2A324929B2500CD5FE7 /* RatesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2A224929B2500CD5FE7 /* RatesService.swift */; };
 		0628B2A62492C2A400CD5FE7 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2A52492C2A400CD5FE7 /* Repository.swift */; };
-		0628B2AD2492E5C100CD5FE7 /* RatesCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2AB2492E5C100CD5FE7 /* RatesCoreData+CoreDataClass.swift */; };
-		0628B2AE2492E5C100CD5FE7 /* RatesCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2AC2492E5C100CD5FE7 /* RatesCoreData+CoreDataProperties.swift */; };
-		0628B2B02494191F00CD5FE7 /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2AF2494191F00CD5FE7 /* LocalDatabase.swift */; };
 		0628B2B224941A9600CD5FE7 /* RateEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2B124941A9600CD5FE7 /* RateEntity.swift */; };
-		0628B2B324942B6900CD5FE7 /* CurrencyConverter.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 0628B26D249255DF00CD5FE7 /* CurrencyConverter.xcdatamodeld */; };
 		0628B2B62495CC9E00CD5FE7 /* RatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2B52495CC9E00CD5FE7 /* RatesViewModel.swift */; };
 		0628B2B9249681FC00CD5FE7 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2B8249681FC00CD5FE7 /* Util.swift */; };
 		0628B2BB24968CA500CD5FE7 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2BA24968CA500CD5FE7 /* NetworkStatus.swift */; };
 		0628B2BF2497C29F00CD5FE7 /* CurrencyDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0628B2BE2497C29F00CD5FE7 /* CurrencyDropDownView.swift */; };
 		06949CB02505CCD00016525F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06949CAF2505CCD00016525F /* HomeView.swift */; };
 		06949CB22508A5A80016525F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06949CB12508A5A80016525F /* Extensions.swift */; };
+		06949CB4250AFC4B0016525F /* RateRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06949CB3250AFC4B0016525F /* RateRealm.swift */; };
+		06949CB6250B13090016525F /* RealmDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06949CB5250B13090016525F /* RealmDatabase.swift */; };
+		06949CB8250C30540016525F /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06949CB7250C30540016525F /* LocalDatabase.swift */; };
 		06C6F9E4249824E40003A878 /* CurrencyDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 06C6F9E3249824E40003A878 /* CurrencyDropDownView.xib */; };
 		06C6F9E624A5DE1A0003A878 /* NetworkBoundResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C6F9E524A5DE1A0003A878 /* NetworkBoundResource.swift */; };
 		10853F5450E01586FEA54618 /* Pods_CurrencyConverter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1D4506490DDEF6CD91296B0 /* Pods_CurrencyConverter.framework */; };
@@ -59,7 +58,6 @@
 		0628B264249255DF00CD5FE7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0628B266249255DF00CD5FE7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0628B268249255DF00CD5FE7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0628B26E249255DF00CD5FE7 /* CurrencyConverter.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CurrencyConverter.xcdatamodel; sourceTree = "<group>"; };
 		0628B270249255E700CD5FE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0628B273249255E700CD5FE7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0628B275249255E700CD5FE7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,9 +72,6 @@
 		0628B2A024929A0800CD5FE7 /* CurrencyRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRate.swift; sourceTree = "<group>"; };
 		0628B2A224929B2500CD5FE7 /* RatesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesService.swift; sourceTree = "<group>"; };
 		0628B2A52492C2A400CD5FE7 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		0628B2AB2492E5C100CD5FE7 /* RatesCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RatesCoreData+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		0628B2AC2492E5C100CD5FE7 /* RatesCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RatesCoreData+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		0628B2AF2494191F00CD5FE7 /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		0628B2B124941A9600CD5FE7 /* RateEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateEntity.swift; sourceTree = "<group>"; };
 		0628B2B52495CC9E00CD5FE7 /* RatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesViewModel.swift; sourceTree = "<group>"; };
 		0628B2B8249681FC00CD5FE7 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -84,6 +79,9 @@
 		0628B2BE2497C29F00CD5FE7 /* CurrencyDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDropDownView.swift; sourceTree = "<group>"; };
 		06949CAF2505CCD00016525F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		06949CB12508A5A80016525F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		06949CB3250AFC4B0016525F /* RateRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateRealm.swift; sourceTree = "<group>"; };
+		06949CB5250B13090016525F /* RealmDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabase.swift; sourceTree = "<group>"; };
+		06949CB7250C30540016525F /* LocalDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		06C6F9E3249824E40003A878 /* CurrencyDropDownView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyDropDownView.xib; sourceTree = "<group>"; };
 		06C6F9E524A5DE1A0003A878 /* NetworkBoundResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBoundResource.swift; sourceTree = "<group>"; };
 		0F882D29C1CA2723267EE618 /* Pods-CurrencyConverter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyConverter.debug.xcconfig"; path = "Target Support Files/Pods-CurrencyConverter/Pods-CurrencyConverter.debug.xcconfig"; sourceTree = "<group>"; };
@@ -222,9 +220,9 @@
 		0628B29B249274C900CD5FE7 /* local */ = {
 			isa = PBXGroup;
 			children = (
+				06949CB7250C30540016525F /* LocalDatabase.swift */,
 				0628B2A82492DB9200CD5FE7 /* model */,
-				0628B26D249255DF00CD5FE7 /* CurrencyConverter.xcdatamodeld */,
-				0628B2AF2494191F00CD5FE7 /* LocalDatabase.swift */,
+				06949CB5250B13090016525F /* RealmDatabase.swift */,
 			);
 			path = local;
 			sourceTree = "<group>";
@@ -242,9 +240,8 @@
 		0628B2A82492DB9200CD5FE7 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				0628B2AB2492E5C100CD5FE7 /* RatesCoreData+CoreDataClass.swift */,
-				0628B2AC2492E5C100CD5FE7 /* RatesCoreData+CoreDataProperties.swift */,
 				0628B2B124941A9600CD5FE7 /* RateEntity.swift */,
+				06949CB3250AFC4B0016525F /* RateRealm.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -409,7 +406,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0628B2B324942B6900CD5FE7 /* CurrencyConverter.xcdatamodeld in Resources */,
 				0628B274249255E700CD5FE7 /* LaunchScreen.storyboard in Resources */,
 				0628B271249255E700CD5FE7 /* Assets.xcassets in Resources */,
 				06C6F9E4249824E40003A878 /* CurrencyDropDownView.xib in Resources */,
@@ -560,22 +556,22 @@
 				0628B29D2492769500CD5FE7 /* ApplicationContainer.swift in Sources */,
 				0628B2A124929A0800CD5FE7 /* CurrencyRate.swift in Sources */,
 				0628B2B62495CC9E00CD5FE7 /* RatesViewModel.swift in Sources */,
-				0628B2AD2492E5C100CD5FE7 /* RatesCoreData+CoreDataClass.swift in Sources */,
 				0628B269249255DF00CD5FE7 /* ViewController.swift in Sources */,
 				0628B265249255DF00CD5FE7 /* AppDelegate.swift in Sources */,
-				0628B2B02494191F00CD5FE7 /* LocalDatabase.swift in Sources */,
 				06949CB22508A5A80016525F /* Extensions.swift in Sources */,
-				0628B2AE2492E5C100CD5FE7 /* RatesCoreData+CoreDataProperties.swift in Sources */,
+				06949CB6250B13090016525F /* RealmDatabase.swift in Sources */,
 				0628B2BF2497C29F00CD5FE7 /* CurrencyDropDownView.swift in Sources */,
 				06949CB02505CCD00016525F /* HomeView.swift in Sources */,
 				0628B2A324929B2500CD5FE7 /* RatesService.swift in Sources */,
 				0628B2B224941A9600CD5FE7 /* RateEntity.swift in Sources */,
 				06C6F9E624A5DE1A0003A878 /* NetworkBoundResource.swift in Sources */,
 				0628B29F249295F800CD5FE7 /* RatesResult.swift in Sources */,
+				06949CB8250C30540016525F /* LocalDatabase.swift in Sources */,
 				0628B2B9249681FC00CD5FE7 /* Util.swift in Sources */,
 				0628B267249255DF00CD5FE7 /* SceneDelegate.swift in Sources */,
 				0628B2BB24968CA500CD5FE7 /* NetworkStatus.swift in Sources */,
 				0628B2A62492C2A400CD5FE7 /* Repository.swift in Sources */,
+				06949CB4250AFC4B0016525F /* RateRealm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,19 +892,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		0628B26D249255DF00CD5FE7 /* CurrencyConverter.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				0628B26E249255DF00CD5FE7 /* CurrencyConverter.xcdatamodel */,
-			);
-			currentVersion = 0628B26E249255DF00CD5FE7 /* CurrencyConverter.xcdatamodel */;
-			path = CurrencyConverter.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 0628B259249255DF00CD5FE7 /* Project object */;
 }

@@ -22,7 +22,7 @@ class RatesServiceImpl: RatesService {
     
     
     func fetchRxRates(date: String) -> Observable<RatesResult>{
-        return string(.get, "\(BASE_URL)/\(date)", parameters: ["access_key": "API_KEY"])
+        return string(.get, "\(BASE_URL)/\(date)", parameters: ["access_key": API_KEY])
             .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .map{
                 if let result = RatesResult(JSONString: $0) {

@@ -12,18 +12,14 @@ import CoreData
 
 class ApplicationContainer{
     
-    static func build(in container: Container, persistentContainer: NSPersistentContainer) {
-        
-        container.register(NSPersistentContainer.self){ _ in
-            return persistentContainer
-        }
+    static func build(in container: Container) {
         
         container.register(RatesService.self){ _ in
             return RatesServiceImpl()
         }
         
         container.register(LocalDatabase.self){ resolver in
-            return LocalDatabaseImpl(persistentContainer: resolver.resolve(NSPersistentContainer.self)!)
+            return RealmDatabase()
         }
         
         container.register(RatesViewModel.self){ resolver in

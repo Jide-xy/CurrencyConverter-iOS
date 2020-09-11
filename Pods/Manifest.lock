@@ -5,6 +5,11 @@ PODS:
     - Kingfisher/Core (= 5.14.0)
   - Kingfisher/Core (5.14.0)
   - ObjectMapper (4.2.0)
+  - Realm (5.4.0):
+    - Realm/Headers (= 5.4.0)
+  - Realm/Headers (5.4.0)
+  - RealmSwift (5.4.0):
+    - Realm (= 5.4.0)
   - RxAlamofire (5.3.2):
     - RxAlamofire/Core (= 5.3.2)
   - RxAlamofire/Core (5.3.2):
@@ -28,6 +33,7 @@ DEPENDENCIES:
   - DropDown (= 2.3.13)
   - Kingfisher (~> 5.0)
   - ObjectMapper (~> 4.2.0)
+  - RealmSwift
   - RxAlamofire (~> 5.3.2)
   - RxBlocking (~> 5)
   - RxCocoa (~> 5)
@@ -43,6 +49,8 @@ SPEC REPOS:
     - DropDown
     - Kingfisher
     - ObjectMapper
+    - Realm
+    - RealmSwift
     - RxAlamofire
     - RxBlocking
     - RxCocoa
@@ -58,6 +66,8 @@ SPEC CHECKSUMS:
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   Kingfisher: 7b64389a43139c903ec434788344c288217c792d
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
+  Realm: 8949757d76e2451a53d727954c607e49c2542b77
+  RealmSwift: 0b7d7121e842724188123c6086831ae6d2952050
   RxAlamofire: 9234f30d94bfae9889c2aaba36358312083a7ad3
   RxBlocking: 5f700a78cad61ce253ebd37c9a39b5ccc76477b4
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
@@ -68,6 +78,6 @@ SPEC CHECKSUMS:
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
 
-PODFILE CHECKSUM: 7de8cd5988804b2b1f1c4269eac61e05e8ed2bf8
+PODFILE CHECKSUM: ed8ceafa68b065d8d1dc29f50f0ef2ab3a2c2ec6
 
 COCOAPODS: 1.9.1

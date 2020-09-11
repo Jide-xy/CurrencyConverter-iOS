@@ -18,6 +18,7 @@ target 'CurrencyConverter' do
     pod 'Kingfisher', '~> 5.0'
     pod 'DropDown', '2.3.13'
     pod 'SnapKit', '~> 5.0.0'
+    pod 'RealmSwift'
 
   target 'CurrencyConverterTests' do
     inherit! :search_paths

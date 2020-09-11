@@ -45,7 +45,6 @@ class RepositoryImpl: Repository {
                     }
                     .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             }
-                .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .catchError{error in
                 let errorMessage: String
                 if let error = (error as? ApiError){
