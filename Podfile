@@ -18,12 +18,14 @@ target 'CurrencyConverter' do
     pod 'Kingfisher', '~> 5.0'
     pod 'DropDown', '2.3.13'
     pod 'SnapKit', '~> 5.0.0'
+#    pod 'sharedmodule', :path => '/Users/jide/Documents/Personal/CurrencyConverter/sharedmodule/'
 
   target 'CurrencyConverterTests' do
     inherit! :search_paths
     # Pods for testing
     pod 'RxBlocking', '~> 5'
     pod 'RxTest', '~> 5'
+#    pod 'Charts'
   end
 
   target 'CurrencyConverterUITests' do

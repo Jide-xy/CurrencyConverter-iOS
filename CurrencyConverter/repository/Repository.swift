@@ -11,9 +11,11 @@ import RxCocoa
 
 protocol Repository {
     func getRates() -> Observable<NetworkStatus<[CurrencyRate]>>
+    func getHistoricalRates(numberOfDays: Int) -> Observable<NetworkStatus<HistoricalRatesResult>>
 }
 
 class RepositoryImpl: Repository {
+    
     
     let apiService: RatesService
     let localDB: LocalDatabase
@@ -63,22 +65,37 @@ class RepositoryImpl: Repository {
             .bind(to: observer)
             return disposable
         }
-        //        apiService.fetchRxRates(date: "latest").map{ ratesResult in
-        //            return ratesResult.rates.map{
-        //                RateEntity(currencyCode: $0.key, baseCurrencyCode: ratesResult.base, rate: $0.value)
-        //            }
-        //        }
-        //        .do(onSubscribe: {
-        //            response.accept(.Loading(data: self.localDB.getRates().map{$0.toUICurrencyRate()}))
-        //        })
-        //            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-        //            .subscribe(onNext: {value in
-        //                self.localDB.saveRates(rates: value)
-        //                response.flatMapLatest()
-        //            }, onError: { error in
-        //
-        //            })
-        //            .disposed(by: disposeBag)
-        //        return response.asObservable()
+    }
+    
+    func getHistoricalRates(numberOfDays: Int) -> Observable<NetworkStatus<HistoricalRatesResult>> {
+        var datesFromNow: [String] = []
+        let today = Date()
+        let formatter = DateFormatter(withFormat: "yyyy-MM-dd", locale: "en_US")
+        datesFromNow.append(formatter.string(from: today))
+        for i in 1...4 {
+            datesFromNow.append(formatter.string(from: Calendar.current.date(byAdding: .day, value: (numberOfDays / 5) * -i, to: Date())!))
+        }
+        datesFromNow.reverse()
+        let uiFormatter = DateFormatter(withFormat: "dd MMM", locale: "en_US")
+        return Observable.zip(datesFromNow.map{self.apiService.fetchRxRates(date: $0)})
+        .map {
+            NetworkStatus.Success(HistoricalRatesResult(numberOfDays: numberOfDays, data: $0.map{rate in
+                (uiFormatter.string(from: formatter.date(from: rate.date)!),
+                    rate.rates.map{key, value in CurrencyRate(currencyCode: key, rate: value, baseCurrencyCode: rate.base, date: rate.date)})
+            }))
+            }
+        .catchError{error in
+            let errorMessage: String
+            if let error = (error as? ApiError){
+                switch error {
+                case let .parsingError(info):
+                    errorMessage = info
+                }
+            } else {
+                errorMessage = error.localizedDescription
+            }
+            return .just(NetworkStatus.Error(message: errorMessage))
+        }
+        .startWith(.Loading())
     }
 }

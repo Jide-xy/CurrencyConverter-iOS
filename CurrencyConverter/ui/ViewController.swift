@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 import DropDown
 import Kingfisher
+import Charts
 
 class ViewController: UIViewController {
     
@@ -28,6 +29,14 @@ class ViewController: UIViewController {
     let currencies = Util.currencyMap
     
     var manuallyEditing: Bool = false
+    
+    var fromSelectedIndex = -1
+
+    var toSelectedIndex = -1
+
+    var thirtyDaysHistoricalRates: [(currency: String, rates: [CurrencyRate])] = []
+    var ninetyDaysHistoricalRates: [(currency: String, rates: [CurrencyRate])] = []
+    var dates: [Double: String] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +60,31 @@ class ViewController: UIViewController {
                 case let .Loading(data):
                     self.rates = data ?? []
                     self.startLoading()
+                    self.buildHistoricalRatesGraph(tabPosition: self.homeView.trendsView.tabView.selectedSegmentIndex)
                 case let .Success(data):
                     self.rates = data ?? []
+                    self.stopLoading()
+                    self.buildHistoricalRatesGraph(tabPosition: self.homeView.trendsView.tabView.selectedSegmentIndex)
+                case .Error(message: let message, data: _):
+                    self.stopLoading()
+                    self.showError(error: message ?? "An unknown error occurred")
+                }
+            }).disposed(by: disposeBag)
+        
+        ratesViewModel.historicalRatesObservable
+            .drive(onNext: { result in
+                //print("Api result \(result)")
+                switch result{
+                case .Loading(_):
+                    self.startLoading()
+                case let .Success(data):
+                    if data?.numberOfDays == 30 {
+                        self.thirtyDaysHistoricalRates = data?.data ?? []
+                    }
+                    else {
+                        self.ninetyDaysHistoricalRates = data?.data ?? []
+                    }
+                    self.buildHistoricalRatesGraph(tabPosition: self.homeView.trendsView.tabView.selectedSegmentIndex)
                     self.stopLoading()
                 case .Error(message: let message, data: _):
                     self.stopLoading()
@@ -79,6 +111,7 @@ class ViewController: UIViewController {
         homeView.sourceDropDownTF.addTarget(self, action: #selector(ViewController.sourceCurrencyTextChanged(_:)), for: .editingChanged)
         homeView.destinationDropDownTF.addTarget(self, action: #selector(ViewController.destinationCurrencyTextChanged(_:)), for: .editingChanged)
         homeView.sourceTextField.addTarget(self, action: #selector(ViewController.sourceAmountTextChanged(_:)), for: .editingChanged)
+        homeView.trendsView.tabView.addTarget(self, action: #selector(ViewController.tabSelected(sender:)), for: .valueChanged)
     }
     
     private func initDropDown(){
@@ -99,25 +132,23 @@ class ViewController: UIViewController {
             cell.optionLabel.text = item
         }
         
-        homeView.sourceDropDown.dataSource = Array(currencies.keys).sorted()
-        homeView.destinationDropDown.dataSource = Array(currencies.keys).sorted()
-        
         homeView.sourceDropDown.direction = .any
         homeView.destinationDropDown.direction = .any
         
-        homeView.sourceDropDown.bottomOffset = CGPoint(x: 0, y:(homeView.sourceDropDown.anchorView?.plainView.bounds.height)!)
-        homeView.destinationDropDown.bottomOffset = CGPoint(x: 0, y:(homeView.destinationDropDown.anchorView?.plainView.bounds.height)!)
+        homeView.sourceDropDown.bottomOffset = CGPoint(x: 0, y:(homeView.sourceDropDown.anchorView?.plainView.intrinsicContentSize.height)!)
+        homeView.destinationDropDown.bottomOffset = CGPoint(x: 0, y:(homeView.destinationDropDown.anchorView?.plainView.intrinsicContentSize.height)!)
         
-        homeView.sourceDropDown.topOffset = CGPoint(x: 0, y: -(homeView.sourceDropDown.anchorView?.plainView.bounds.height)!)
-        homeView.destinationDropDown.topOffset = CGPoint(x: 0, y: -(homeView.destinationDropDown.anchorView?.plainView.bounds.height)!)
+        homeView.sourceDropDown.topOffset = CGPoint(x: 0, y: -(homeView.sourceDropDown.anchorView?.plainView.intrinsicContentSize.height)!)
+        homeView.destinationDropDown.topOffset = CGPoint(x: 0, y: -(homeView.destinationDropDown.anchorView?.plainView.intrinsicContentSize.height)!)
         
         homeView.sourceDropDown.selectionAction = { (index: Index, item: String) in
+            self.fromSelectedIndex = index
             self.homeView.sourceDropDownTF.text = item
             self.homeView.sourceDDCurrencyImage.kf.setImage(with: self.buildImageUrl(item: item))
             self.homeView.sourceTFCurrencyLabel.text = item
             
             
-            //buildHistoricalRatesGraph(ratesTab.selectedTabPosition)
+            self.buildHistoricalRatesGraph(tabPosition: self.homeView.trendsView.tabView.selectedSegmentIndex)
             if (self.homeView.sourceTextField.text?.isEmpty ?? true || self.homeView.sourceDropDownTF.text?.isEmpty ?? true || self.homeView.destinationDropDownTF.text?.isEmpty ?? true) {
                 return
             }
@@ -125,19 +156,28 @@ class ViewController: UIViewController {
         }
         
         homeView.destinationDropDown.selectionAction = { (index: Index, item: String) in
+            self.toSelectedIndex = index
             self.homeView.destinationDropDownTF.text = item
             self.homeView.destinationDDCurrencyImage.kf.setImage(with: self.buildImageUrl(item: item))
             self.homeView.destinationTFCurrencyLabel.text = item
             
-            //buildHistoricalRatesGraph(ratesTab.selectedTabPosition)
+            self.buildHistoricalRatesGraph(tabPosition: self.homeView.trendsView.tabView.selectedSegmentIndex)
             if (self.homeView.sourceTextField.text?.isEmpty ?? true || self.homeView.sourceDropDownTF.text?.isEmpty ?? true || self.homeView.destinationDropDownTF.text?.isEmpty ?? true) {
                 return
             }
             self.convertValue()
         }
+        updateDropDownsSource()
     }
     
-    
+    private func updateDropDownsSource(){
+        homeView.sourceDropDown.dataSource = Array(currencies.keys).sorted()
+        homeView.destinationDropDown.dataSource = Array(currencies.keys).sorted()
+        homeView.sourceDropDown.selectRow(at: 0)
+        homeView.sourceDropDown.selectionAction?(0, homeView.sourceDropDown.dataSource[0])
+        homeView.destinationDropDown.selectRow(at: 1)
+        homeView.destinationDropDown.selectionAction?(1, homeView.destinationDropDown.dataSource[1])
+    }
     
     
     private func buildImageUrl(item: String) -> URL? {
@@ -168,6 +208,12 @@ class ViewController: UIViewController {
 //            return
 //        }
         
+    }
+    
+    @objc func tabSelected(sender: UISegmentedControl)
+    {
+        let index = sender.selectedSegmentIndex
+        buildHistoricalRatesGraph(tabPosition: index)
     }
     
 }
@@ -241,7 +287,7 @@ extension ViewController: UITextFieldDelegate{
     func filterCurrencies(input: String) -> [String : Locale]{
        
         return currencies.filter{
-            print("input: \(input) values: \n\($0.key) || \( ($0.value as NSLocale?)?.displayName(forKey: .currencyCode, value: $0.key) ?? "") || \(($0.value as NSLocale?)?.displayName(forKey: .countryCode, value: ($0.value as NSLocale?)?.countryCode ?? "") ?? "") || locale: \($0.value.currencyCode ?? "")\n")
+//            print("input: \(input) values: \n\($0.key) || \( ($0.value as NSLocale?)?.displayName(forKey: .currencyCode, value: $0.key) ?? "") || \(($0.value as NSLocale?)?.displayName(forKey: .countryCode, value: ($0.value as NSLocale?)?.countryCode ?? "") ?? "") || locale: \($0.value.currencyCode ?? "")\n")
             return $0.key.lowercased().contains(input.lowercased()) ||
                 ($0.value as NSLocale?)?.displayName(forKey: .currencyCode, value: $0.key)?.lowercased().contains(input.lowercased()) ?? false ||
                 ($0.value as NSLocale?)?.displayName(forKey: .countryCode, value: ($0.value as NSLocale?)?.countryCode ?? "")?.lowercased().contains(input.lowercased()) ?? false
@@ -276,6 +322,110 @@ extension ViewController {
             
             homeView.destinationTextField.text = formatValue(value: String(format: "%f", convertedValue))
         }
+    }
+}
+
+//Graph Region
+extension ViewController{
+    
+    private func setUpLineChart(historicalRates: [(currency: String, rates: [CurrencyRate])], tabPosition: Int) {
+        var entries: [ChartDataEntry] = []
+        
+        dates.removeAll(keepingCapacity: false)
+        if (historicalRates.count != 0){
+            for (index,entry) in historicalRates.enumerated(){
+                let fromCurrencyCode = rates[fromSelectedIndex].currencyCode
+                let toCurrencyCode = rates[toSelectedIndex].currencyCode
+                let fcr = entry.rates.first{
+                    $0.currencyCode == fromCurrencyCode
+                }
+                let tcr = entry.rates.first {
+                    $0.currencyCode == toCurrencyCode
+                }
+                
+                guard let fromCurrencyRate = fcr, let toCurrencyRate = tcr  else {
+                    continue
+                }
+                if (fromCurrencyRate.baseCurrencyCode == toCurrencyRate.baseCurrencyCode) {
+                    let convertedValue = toCurrencyRate.rate / Double(fromCurrencyRate.rate)
+                    dates[Double(index)] = entry.currency
+                    entries.append(ChartDataEntry(x: Double(index), y: convertedValue))
+                }
+            }
+            let dataSet = LineChartDataSet(entries: entries, label: "Last ${if (tabPosition == 0) 30 else 90} days")
+            dataSet.also {
+                $0.drawCirclesEnabled = false
+                $0.mode = LineChartDataSet.Mode.cubicBezier
+                $0.drawValuesEnabled = false
+                $0.drawFilledEnabled = true
+                $0.setDrawHighlightIndicators(false)
+                $0.lineWidth = 0.5
+                let colorTop = UIColor.white.withAlphaComponent(0.3).cgColor
+                let colorBottom = UIColor.clear.cgColor
+
+                let gl = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [colorTop, colorBottom] as CFArray, locations: [0.75, 1])
+                $0.fill = Fill(linearGradient: gl!, angle: 270)
+            }
+            let lineData = LineChartData(dataSet: dataSet)
+            lineData.setValueTextColor(.white)
+            lineData.setValueFont(.systemFont(ofSize: 16))
+            let lineChart = homeView.trendsView.lineChart
+            let xAxis = lineChart.xAxis
+            xAxis.also {
+                $0.granularity = 1.0 // minimum axis-step (interval) is 1
+                $0.valueFormatter = {
+                    class Anon: IAxisValueFormatter {
+                    let dates: [Double: String]
+                        init(dates: [Double: String]) {
+                            self.dates = dates
+                        }
+                    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+                        return dates[value] ?? ""
+                    }
+                }
+                    return Anon(dates: dates)
+                }()
+                $0.labelPosition = XAxis.LabelPosition.bottom
+                $0.drawGridLinesEnabled = false
+                $0.drawAxisLineEnabled = true
+                $0.labelTextColor = .white
+                $0.axisLineColor = .white
+                $0.axisLineWidth = 0.05
+                $0.centerAxisLabelsEnabled = false
+            }
+
+            lineChart.rightAxis.enabled = false
+            let yAxis = lineChart.leftAxis
+            yAxis.also {
+                $0.drawGridLinesEnabled = false
+                $0.drawLabelsEnabled = false
+                $0.axisLineWidth = 0.05
+                $0.axisLineColor = .white
+            }
+            lineChart.legend.enabled = false
+            lineChart.chartDescription = nil
+//            lineChart.marker = CustomMarker(this, R.layout.marker_view)
+            lineChart.extraRightOffset = 30
+            lineChart.data = lineData
+            lineChart.notifyDataSetChanged()
+        }
+    }
+    
+    func buildHistoricalRatesGraph(tabPosition: Int){
+        if (fromSelectedIndex < 0 || toSelectedIndex < 0 || rates.isEmpty){
+            return
+        }
+        var historicalRates : [(currency: String, rates: [CurrencyRate])]
+        switch tabPosition {
+        case 0:
+            historicalRates = thirtyDaysHistoricalRates
+        case 1:
+            historicalRates = ninetyDaysHistoricalRates
+        
+        default:
+            return
+        }
+        setUpLineChart(historicalRates: historicalRates, tabPosition: tabPosition)
     }
 }
 
